@@ -5,7 +5,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <error.h>
-#include <fcntl.h>      
+#include <fcntl.h>    
+#include <iostream>  
 #include <sys/epoll.h>
 #include <signal.h>
 #include <assert.h>
@@ -14,6 +15,7 @@
 #include "http_conn.h"
 #include "lst_timer.h"
 #include "log.h"
+using namespace std;
 
 #define MAX_FD 65535            // 最大文件描述符（客户端）数量
 #define MAX_EVENT_SIZE 10000    // 监听的最大的事件数量
@@ -31,7 +33,7 @@ void addsig(int sig, void(handler)(int)){
     sigfillset(&sigact.sa_mask);                // 将临时阻塞信号集中的所有的标志位置为1，即都阻塞
     sigaction(sig, &sigact, NULL);              // 设置信号捕捉sig信号值
 }
-
+  
 // 向管道写数据的信号捕捉回调函数
 void sig_to_pipe(int sig){
     int save_errno = errno;
@@ -58,6 +60,8 @@ int main(int argc, char* argv[]){
         EMlog(LOGLEVEL_ERROR,"run as: %s port_number\n", basename(argv[0]));      // argv[0] 可能是带路径的，用basename转换
         exit(-1);
     }
+
+    cout<<"纯自旋锁\n";
 
     // 获取端口号
     int port = atoi(argv[1]);   // 字符串转整数
