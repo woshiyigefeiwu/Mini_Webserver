@@ -61,7 +61,7 @@ int main(int argc, char* argv[]){
         exit(-1);
     }
 
-    cout<<"纯自旋锁\n";
+    cout<<"自旋锁\n";
 
     // 获取端口号
     int port = atoi(argv[1]);   // 字符串转整数
